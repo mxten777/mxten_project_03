@@ -16,7 +16,6 @@ function Modal({ open, onClose, children }: { open: boolean; onClose: () => void
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from './components/Button';
-import { Input } from './components/Input';
 import { Card } from './components/Card';
 import { Table } from './components/Table';
 import { messaging } from './firebase';
@@ -99,32 +98,21 @@ function App() {
   }, []);
 
   const [favorites, setFavorites] = useState<Favorite[]>(MOCK_FAVORITES);
-  const [stopName, setStopName] = useState('');
-  const [routeName, setRouteName] = useState('');
 
-  const addFavorite = () => {
-    if (!stopName.trim() || !routeName.trim()) return;
-    setFavorites((prev) => [
-      ...prev,
-      { id: Date.now().toString(), stopName: stopName.trim(), routeName: routeName.trim() }
-    ]);
-    setStopName('');
-    setRouteName('');
-  };
 
   const removeFavorite = (id: string) => {
     setFavorites((prev) => prev.filter(fav => fav.id !== id));
   };
 
   return (
-    <div className={`min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-gray-100 text-[15px] sm:text-base${dark ? ' dark' : ''}`}>
+  <div className={`min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-gray-100 text-base${dark ? ' dark' : ''}`}>
       {/* Header */}
-      <header className="bg-blue-600 text-white py-2 sm:py-4 shadow-md sticky top-0 z-10">
-        <div className="max-w-md mx-auto px-1 sm:px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 w-full">
-          <div className="flex items-center w-full sm:w-auto justify-between">
-            <h1 className="text-base sm:text-2xl font-bold tracking-tight" tabIndex={0} aria-label="출퇴근 정류장 알리미">출퇴근 정류장 알리미</h1>
+      <header className="bg-blue-600 text-white py-3 sm:py-4 shadow-md sticky top-0 z-10">
+  <div className="w-full mx-auto px-2 sm:px-6 lg:px-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+          <div className="flex items-center w-full sm:w-auto justify-between gap-2">
+            <h1 className="text-lg sm:text-2xl font-bold tracking-tight" tabIndex={0} aria-label="출퇴근 정류장 알리미">출퇴근 정류장 알리미</h1>
             <select
-              className="ml-2 rounded px-2 py-1 text-xs sm:text-sm text-blue-700 bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary min-w-[64px]"
+              className="ml-2 rounded px-2 py-1 text-sm sm:text-base text-blue-700 bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary min-w-[64px]"
               aria-label="테마 컬러 선택"
               value={primaryColor}
               onChange={e => setPrimaryColor(e.target.value)}
@@ -135,7 +123,7 @@ function App() {
             </select>
             {/* 햄버거 버튼: 모바일에서만 보임 */}
             <button
-              className="ml-2 sm:hidden flex items-center justify-center w-10 h-10 rounded border-2 border-white bg-blue-500/90 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white text-white relative"
+              className="ml-2 sm:hidden flex items-center justify-center w-11 h-11 rounded-xl border-2 border-white bg-blue-500/90 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white text-white relative"
               aria-label="메뉴 열기"
               onClick={() => setMenuOpen(v => !v)}
               style={{ zIndex: 30 }}
@@ -145,23 +133,27 @@ function App() {
             </button>
           </div>
           {/* PC: 네비게이션 항상 보임, 모바일: 햄버거 클릭 시만 보임 */}
-          <div className={`flex-col sm:flex-row flex w-full sm:w-auto gap-1 sm:gap-2 ${menuOpen ? 'flex' : 'hidden'} sm:flex bg-blue-600 sm:bg-transparent px-2 sm:px-0 py-2 sm:py-0 rounded-b-2xl sm:rounded-none shadow-lg sm:shadow-none sm:static`}>
-            <nav className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-4 text-xs sm:text-base font-semibold" aria-label="메인 메뉴">
-              <a href="#" className="px-2 py-2 sm:py-1 rounded transition bg-blue-500/80 hover:bg-white hover:text-blue-700 focus:bg-white focus:text-blue-700 text-white shadow-sm focus:outline-dashed focus:outline-2 focus:outline-blue-700 min-w-[64px] text-center" tabIndex={0} aria-label="즐겨찾기">즐겨찾기</a>
-              <a href="#" className="px-2 py-2 sm:py-1 rounded transition bg-blue-500/80 hover:bg-white hover:text-blue-700 focus:bg-white focus:text-blue-700 text-white shadow-sm focus:outline-dashed focus:outline-2 focus:outline-blue-700 min-w-[64px] text-center" tabIndex={0} aria-label="도착정보">도착정보</a>
+          <div className={`flex-col sm:flex-row flex w-full sm:w-auto gap-2 sm:gap-3 ${menuOpen ? 'flex' : 'hidden'} sm:flex bg-blue-600 sm:bg-transparent px-2 sm:px-0 py-2 sm:py-0 rounded-b-2xl sm:rounded-none shadow-lg sm:shadow-none sm:static`}>
+            <nav className="flex flex-row w-full gap-2 sm:gap-3" aria-label="메인 메뉴">
+                <a href="#" className="flex-1 px-0 py-0 min-w-[0]" tabIndex={0} aria-label="즐겨찾기">
+                  <span className="block w-full px-2 py-2 sm:py-1 rounded text-center text-xs sm:text-base font-semibold bg-blue-500/80 hover:bg-white hover:text-blue-700 focus:bg-white focus:text-blue-700 text-white shadow-sm focus:outline-dashed focus:outline-2 focus:outline-blue-700 transition whitespace-nowrap h-auto">즐겨찾기</span>
+                </a>
+                <a href="#" className="flex-1 px-0 py-0 min-w-[0]" tabIndex={0} aria-label="도착정보">
+                  <span className="block w-full px-2 py-2 sm:py-1 rounded text-center text-xs sm:text-base font-semibold bg-blue-500/80 hover:bg-white hover:text-blue-700 focus:bg-white focus:text-blue-700 text-white shadow-sm focus:outline-dashed focus:outline-2 focus:outline-blue-700 transition whitespace-nowrap h-auto">도착정보</span>
+                </a>
+              <Button variant="secondary" className="flex-1 px-2 py-2 sm:py-1 text-xs sm:text-sm min-w-[0] text-center font-semibold" aria-label="다크모드 토글" onClick={toggleDark}>
+                {dark ? '☀️ 밝게' : '🌙 어둡게'}
+              </Button>
             </nav>
-            <Button variant="secondary" className="px-2 py-2 sm:py-1 text-xs sm:text-sm min-w-[64px]" aria-label="다크모드 토글" onClick={toggleDark}>
-              {dark ? '☀️ 밝게' : '🌙 어둡게'}
-            </Button>
           </div>
         </div>
       </header>
       {/* Main */}
-      <main className="flex-1 flex flex-col items-center px-1 sm:px-2 py-4 sm:py-10 mt-2 sm:mt-4">
-        <div className="w-full max-w-md space-y-4 sm:space-y-6">
+      <main className="flex-1 flex flex-col items-center px-0 sm:px-2 lg:px-4 py-4 sm:py-8 mt-2 sm:mt-6">
+        <div className="w-full px-0 space-y-5 sm:space-y-8 lg:space-y-12">
           {/* 즐겨찾기 리스트 */}
-          <Card>
-            <h2 className="text-base sm:text-lg font-bold text-blue-700 mb-4" tabIndex={0} aria-label="즐겨찾기 목록">즐겨찾기 목록</h2>
+          <Card className="rounded-2xl px-2 py-4 sm:px-6 sm:py-7 lg:px-8 lg:py-10 text-base sm:text-lg lg:text-xl">
+            <h2 className="text-base sm:text-lg font-bold text-blue-700 mb-3 sm:mb-4" tabIndex={0} aria-label="즐겨찾기 목록">즐겨찾기 목록</h2>
             {favorites.length === 0 ? (
               <p className="text-gray-500 text-center">등록된 즐겨찾기가 없습니다.</p>
             ) : (
@@ -170,7 +162,7 @@ function App() {
                   {favorites.map(fav => (
                     <motion.li
                       key={fav.id}
-                      className="flex items-center justify-between py-2 gap-2 flex-wrap"
+                      className="flex items-center justify-between py-2 gap-2 flex-wrap text-base sm:text-base"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
@@ -178,7 +170,7 @@ function App() {
                       layout
                     >
                       <span className="font-medium text-gray-800">{fav.stopName} <span className="text-xs text-gray-400">({fav.routeName})</span></span>
-                      <Button variant="danger" className="text-xs ml-2 px-2 py-1 min-w-[48px]" onClick={() => removeFavorite(fav.id)}>삭제</Button>
+                      <Button variant="danger" className="text-sm ml-2 px-3 py-1 min-w-[48px]" onClick={() => removeFavorite(fav.id)}>삭제</Button>
                     </motion.li>
                   ))}
                 </AnimatePresence>
@@ -186,8 +178,8 @@ function App() {
             )}
           </Card>
           {/* 실시간 도착정보 Mock UI */}
-          <Card>
-            <h2 className="text-base sm:text-lg font-bold text-blue-700 mb-4" tabIndex={0} aria-label="실시간 도착정보">실시간 도착정보 (Mock)</h2>
+          <Card className="rounded-2xl px-2 py-4 sm:px-6 sm:py-7 lg:px-8 lg:py-10 text-base sm:text-lg lg:text-xl">
+            <h2 className="text-base sm:text-lg font-bold text-blue-700 mb-3 sm:mb-4" tabIndex={0} aria-label="실시간 도착정보">실시간 도착정보 (Mock)</h2>
             <Table
               columns={[
                 { key: 'stopName', label: '정류장' },
@@ -203,9 +195,9 @@ function App() {
             />
           </Card>
           {/* FCM 토큰 발급 및 표시 UI */}
-          <Card>
-            <h2 className="text-base sm:text-lg font-bold text-blue-700 mb-4" tabIndex={0} aria-label="FCM 푸시 토큰">FCM 푸시 토큰</h2>
-            <Button className="mb-2" onClick={requestFcmToken}>토큰 재발급/권한 요청</Button>
+          <Card className="rounded-2xl px-2 py-4 sm:px-6 sm:py-7 lg:px-8 lg:py-10 text-base sm:text-lg lg:text-xl">
+            <h2 className="text-base sm:text-lg font-bold text-blue-700 mb-3 sm:mb-4" tabIndex={0} aria-label="FCM 푸시 토큰">FCM 푸시 토큰</h2>
+            <Button className="mb-2 px-3 py-2 text-sm" onClick={requestFcmToken}>토큰 재발급/권한 요청</Button>
             {fcmToken && (
               <div className="break-all text-xs bg-gray-100 rounded p-2 border mt-2 text-gray-700">
                 <span className="font-semibold text-blue-700">토큰:</span> {fcmToken}
@@ -227,7 +219,7 @@ function App() {
         </div>
       </main>
       {/* Footer */}
-      <footer className="bg-gray-100 text-gray-500 py-2 sm:py-3 text-center text-xs sm:text-sm border-t border-gray-200">
+      <footer className="bg-gray-100 text-gray-500 py-3 sm:py-5 lg:py-8 text-center text-xs sm:text-base lg:text-lg border-t border-gray-200 w-full">
         &copy; {new Date().getFullYear()} 출퇴근 정류장 알리미
       </footer>
     </div>
